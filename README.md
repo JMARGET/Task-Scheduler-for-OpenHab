@@ -1,5 +1,5 @@
 # Task-Scheduler-for-OpenHab
-This PHP website works directly with OpenHab so that you can create time or sun based rules to automate some operations without writing any line OpenHab rules
+This PHP website works directly with OpenHab so that you can create time or sun based rules to automate some operations without writing any OpenHab rules.
 
 If you want to have a better idea on what this is about, I recommend you take a look into my video that is also attached to the project.
 
