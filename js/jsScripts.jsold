@@ -1,0 +1,479 @@
+
+var TASKFORM= {
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTaskName: function () {
+        var _Retval = true;
+        try {
+
+            
+            //VALIDATE THE NAME
+            var x = document.forms["taskform"]["name"];
+            x.classList.remove("is-invalid");
+
+            if (x.value == "") {
+                x.classList.add("is-invalid");
+                _Retval = false;
+            }
+        } catch (e){
+            alert(e);
+        }
+
+        return _Retval;
+    }
+}
+
+var ACTIONFORM= {
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTrigger: function () {
+            
+        var retval = true;
+
+        try {
+
+            var thisForm=document.forms["taskform"];
+
+            //VALIDATE THE NAME
+            var name = thisForm["actionname"];
+            
+            if (!this.ValidateWithRegex(name,'^(?!\\s)+.')){
+                retval=false;
+            }
+
+
+            //VALIDATE HOURS OR OFFSET DEPENDING ON THE CHOOSEN METHOD
+            var triggerType = thisForm["triggerType"];
+
+
+            switch (parseInt(triggerType.value)) {
+                case 0:
+
+                    //LOADS THE FORMS BASED ON NAME
+                    var iHour = thisForm["hour"];
+                    var iMinute = thisForm["minute"];
+
+                    //VALIDATE HOURS
+                    if (!this.ValidateWithRegex(iHour,'^(?:2[0-3]|[01][0-9]|[0-9])$')){
+                        retval=false;
+                    }
+
+                    //VALIDATE MINUTES
+                    if (!this.ValidateWithRegex(iMinute,'^([0-5][0-9]|[0-9])$')){
+                        retval=false;
+                    }
+
+                    break;
+
+                case 1:
+                    //SAME CASE AS BELOW
+                case 2:
+                    //LOADS THE FORMS BASED ON NAME
+                    var iHour = thisForm["offsethour"];
+                    var iMinute = thisForm["offsetminute"];
+
+                    //VALIDATE OFFSET HOURS
+                    if (!this.ValidateWithRegex(iHour,'^(?:2[0-3]|[01][0-9]|[0-9]|)$')){
+                        retval=false;
+                    }
+
+                    //VALIDATE OFFSET MINUTES
+                    if (!this.ValidateWithRegex(iMinute,'^([0-5][0-9]|[0-9]|)$')){
+                        retval=false;
+                    }
+                    break;
+            }
+
+
+            
+            //VALIDATE ACTIONS ON THE CHOOSEN METHOD
+            var actionType = thisForm["actionType"];
+
+            if (actionType.value == "-") {
+                actionType.classList.add("is-invalid");
+                retval=false;
+            }else {
+                actionType.classList.remove("is-invalid");
+            }
+
+            //VALIDATE THE SPECIFIED VALUE
+            if (actionType.value == 4) {
+                var iSpecifiedValue = thisForm["setdevicevalue"];
+                
+                //VALIDATE SPECIFIED VALUE
+                if (!this.ValidateWithRegex(iSpecifiedValue,'^([0-9]|[0-9][0-9]|100)$')){
+                    retval=false;
+                }
+            }
+
+
+        } catch (e){
+            alert(e);
+        }
+
+        return retval;
+
+
+    },
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTrigger2: function (IdExtention) {
+        var retval = true;
+      
+        try {
+            var thisForm=document.forms["frm_" + IdExtention];
+
+            //VALIDATE THE NAME
+            var name = thisForm["actionname_" + IdExtention];
+
+            
+            if (!this.ValidateWithRegex(name,'^(?!\\s)+.')){
+                retval=false;
+            }
+
+            //VALIDATE HOURS OR OFFSET DEPENDING ON THE CHOOSEN METHOD
+            var triggerType = thisForm["triggerType_" + IdExtention];
+
+
+            switch (parseInt(triggerType.value)) {
+                case 0:
+
+                    //LOADS THE FORMS BASED ON NAME
+                    var iHour = thisForm["hour_" + IdExtention];
+                    var iMinute = thisForm["minute_" + IdExtention];
+
+                    //VALIDATE HOURS
+                    if (!this.ValidateWithRegex(iHour,'^(?:2[0-3]|[01][0-9]|[0-9])$')){
+                        retval=false;
+                    }
+
+                    //VALIDATE MINUTES
+                    if (!this.ValidateWithRegex(iMinute,'^([0-5][0-9]|[0-9])$')){
+                        retval=false;
+                    }
+
+                    break;
+
+                case 1:
+                    //SAME CASE AS BELOW
+                case 2:
+                    //LOADS THE FORMS BASED ON NAME
+                    var iHour = thisForm["offsethour_" + IdExtention];
+                    var iMinute = thisForm["offsetminute_" + IdExtention];
+
+                    //VALIDATE OFFSET HOURS
+                    if (!this.ValidateWithRegex(iHour,'^(?:2[0-3]|[01][0-9]|[0-9]|)$')){
+                        retval=false;
+                    }
+
+                    //VALIDATE OFFSET MINUTES
+                    if (!this.ValidateWithRegex(iMinute,'^([0-5][0-9]|[0-9]|)$')){
+                        retval=false;
+                    }
+                    break;
+            }
+
+
+            //VALIDATE ACTIONS ON THE CHOOSEN METHOD
+            var actionType = thisForm["actionType_" + IdExtention];
+
+            if (actionType.value == "-") {
+                actionType.classList.add("is-invalid");
+                retval=false;
+            }else {
+                actionType.classList.remove("is-invalid");
+            }
+
+            //VALIDATE THE SPECIFIED VALUE
+            if (actionType.value == 4) {
+                var iSpecifiedValue = thisForm["setdevicevalue_" + IdExtention];
+                
+                //VALIDATE SPECIFIED VALUE
+                if (!this.ValidateWithRegex(iSpecifiedValue,'^([0-9]|[0-9][0-9]|100)$')){
+                    retval=false;
+                }
+            }
+
+
+        } catch (e){
+            alert(e);
+        }
+
+        return retval;
+
+
+    },
+
+    ValidateWithRegex: function (control,regexValue){
+        var retval = true;
+        var pattern = new RegExp(regexValue);
+
+        if (pattern.test(control.value) == false) {
+            retval = false;
+            control.classList.add("is-invalid");
+        }else{
+            control.classList.remove("is-invalid");
+        }
+
+        return retval;
+        
+    }
+
+
+}
+
+
+var TRIGGERFORM = {
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTaskName: function () {
+        var _Retval = true;
+        try {
+
+            
+            //VALIDATE THE NAME
+            var x = document.forms["submissionform"]["name"];
+            x.classList.remove("is-invalid");
+
+            if (x.value == "") {
+                x.classList.add("is-invalid");
+                _Retval = false;
+            }
+        } catch (e){
+            alert(e);
+        }
+
+        return _Retval;
+    },
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTrigger: function () {
+        
+        var _Retval = true;
+
+        try {
+
+            
+            //VALIDATE THE NAME
+            var x = document.forms["submissionform"]["name"];
+            x.classList.remove("is-invalid");
+
+            if (x.value == "") {
+                x.classList.add("is-invalid");
+                _Retval = false;
+            }
+
+
+            //VALIDATE HOURS OR OFFSET DEPENDING ON THE CHOOSEN METHOD
+            x = document.forms["submissionform"]["triggerType"];
+
+
+            switch (parseInt(x.value)) {
+                case 0:
+
+                    if (!this.ValidateHour("submissionform", "hour")) { _Retval = false };
+                    if (!this.ValidateMinute("submissionform", "minute")) { _Retval = false };
+
+                    break;
+                case 1:
+                    if (!this.ValidateHour("submissionform", "offsethour", true)) { _Retval = false };
+                    if (!this.ValidateMinute("submissionform", "offsetminute", true)) { _Retval = false };
+                    break;
+                case 2:
+                    if (!this.ValidateHour("submissionform", "offsethour", true)) { _Retval = false };
+                    if (!this.ValidateMinute("submissionform", "offsetminute", true)) { _Retval = false };
+                    break;
+            }
+
+
+            //VALIDATE HOURS OR OFFSET DEPENDING ON THE CHOOSEN METHOD
+            x = document.forms["submissionform"]["actionTypes"];
+            x.classList.remove("is-invalid");
+
+            if (x.value == "-") {
+                x.classList.add("is-invalid");
+                _Retval = false;
+            }
+
+            if (x.value == 4) {
+                y = document.forms["submissionform"]["setdevicevalue"];
+                y.classList.remove("is-invalid");
+                if (!this.ValidateValue("submissionform", "setdevicevalue", true)) { _Retval = false };
+            }
+
+
+        } catch (e){
+            alert(e);
+        }
+
+        return _Retval;
+
+
+    },
+
+    //VALIDATE MINUTES & OFFSET
+    ValidateValue: function (FormName, Field) {
+        var _Retval = true;
+        var pattern = /^([0-9]|[0-9][0-9]|100)$/;
+
+        var x = document.forms[FormName][Field];
+        x.classList.remove("is-invalid");
+
+        if (pattern.test(x.value) == false) {
+            x.classList.add("is-invalid");
+            _Retval = false;
+        };
+
+        return _Retval;
+
+    },
+
+    //VALIDATE MINUTES & OFFSET
+    ValidateMinute: function (FormName, Field, AcceptEmpty) {
+        var _Retval = true;
+        var pattern;
+
+        if (AcceptEmpty) {
+            pattern = /^([0-5][0-9]|[0-9]|)$/;
+        } else {
+            pattern = /^([0-5][0-9]|[0-9])$/;
+        }
+        var x = document.forms[FormName][Field];
+        x.classList.remove("is-invalid");
+
+        if (pattern.test(x.value) == false) {
+            x.classList.add("is-invalid");
+            _Retval = false;
+        };
+
+        return _Retval;
+
+    },
+
+    //VALIDATE HOURS & OFFSET
+    ValidateHour:function (FormName, Field, AcceptEmpty) {
+        var _Retval = true;
+        var pattern;
+
+        if (AcceptEmpty) {
+            pattern = /^(?:2[0-3]|[01][0-9]|[0-9]|)$/;
+        } else {
+            pattern = /^(?:2[0-3]|[01][0-9]|[0-9])$/;
+        }
+
+        var x = document.forms[FormName][Field];
+        x.classList.remove("is-invalid");
+
+        if (pattern.test(x.value) == false) {
+            x.classList.add("is-invalid");
+            _Retval = false;
+        };
+
+        return _Retval;
+    },
+
+    //SHOW THE APPROPRIATE DIV BASED ON THE SELECTED TRIGGER TIME
+    ToogleTriggerProperties: function() {
+        var select = $('#triggerType');
+        $('#Time').hide();
+        $('#SunriseSunset').hide();
+
+        if (select.val() == 0) {
+            $('#Time').show();
+        }
+
+        if (select.val() == 1 || select.val() == 2) {
+            $('#SunriseSunset').show();
+        }
+
+    },
+
+    //SHOW THE APPROPRIATE DIV BASED ON THE SELECTED TRIGGER TIME
+    ToogleTriggerProperties2: function(IdExtention) {
+        try {
+            var select = $('#triggerType_' + IdExtention);
+            $('#Time_' + IdExtention).hide();
+            $('#SunriseSunset_' + IdExtention).hide();
+
+            if (select.val() == 0) {
+                $('#Time_'+ IdExtention).show();
+            }
+
+            if (select.val() == 1 || select.val() == 2) {
+                $('#SunriseSunset_'+ IdExtention).show();
+            }
+        } catch (e){
+            alert(e);
+        }
+    },
+
+    //SHOW DEVICES BASED ON THE SELECTED ACTION TYPE
+    ToogleDevices: function(IdExtention) {
+        try {
+            
+            var suffix="";
+
+            if (IdExtention !=null){
+                suffix='_' + IdExtention;
+            }
+
+            var select = $('#actionType' + suffix);
+            $('#device_rollers' + suffix).hide();
+            $('#device_lights' + suffix).hide();
+            $('#device_setvalue' + suffix).hide();
+            $('#setdevicevalue' + suffix).hide();
+
+            if (select.val() == 0 ||select.val() == 1) {
+                $('#device_rollers' + suffix).show();
+            }
+
+            if (select.val() == 2 ||select.val() == 3) {
+                $('#device_lights' + suffix).show();
+            }
+        
+            if (select.val() == 4) {
+                $('#device_setvalue' + suffix).show();
+                $('#setdevicevalue' + suffix).show();
+            }
+
+        } catch (e){
+            alert(e);
+        }
+
+    }
+
+
+}
+
+
+var DEVICESFORM = {
+
+
+    //GLOBAL CALL TO VALIDATE THE FORM
+    ValidateTrigger: function () {
+        
+        var _Retval = true;
+
+        try {
+
+            
+            //VALIDATE THE URL
+            var x = document.forms["RefreshParameters"]["ohserverurl"];
+            x.classList.remove("is-invalid");
+
+            if (x.value == "") {
+                x.classList.add("is-invalid");
+                _Retval = false;
+            }
+         
+
+
+        } catch (e){
+            alert(e);
+        }
+
+        return _Retval;
+
+
+    }
+}
